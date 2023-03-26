@@ -1,8 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 import math
-import pandas as pd
-import re
 import streamlit as st
 
 rjcc_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjcc'
