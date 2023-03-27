@@ -44,6 +44,13 @@ class wind_cal:
             if 'G' in data:
                 gust.append(data)
                 num.append(wd)
+        
+        for d,data in enumerate(wind_data):
+            if 'G' in data:
+                wind_speed_g = int(wind_data[d][3:5])
+                wind_gust_g = int(wind_data[d][6:8])
+                a=round((wind_gust_g-wind_speed_g)/2+wind_speed_g )
+                wind_data[d] = f"{data[:3]}{a:02d}KT"
 
         wind_c=[]
         for j in wind_data:
@@ -130,6 +137,12 @@ class wind_cal_no_tail:
             if 'G' in data:
                 gust.append(data)
                 num.append(wd)
+        for d,data in enumerate(wind_data):
+            if 'G' in data:
+                wind_speed_g = int(wind_data[d][3:5])
+                wind_gust_g = int(wind_data[d][6:8])
+                a=round((wind_gust_g-wind_speed_g)/2+wind_speed_g )
+                wind_data[d] = f"{data[:3]}{a:02d}KT"
 
         wind_c=[]
         for j in wind_data:
@@ -201,6 +214,12 @@ class wind_cal_rjtt:
             if 'G' in data:
                 gust.append(data)
                 num.append(wd)
+        for d,data in enumerate(wind_data):
+            if 'G' in data:
+                wind_speed_g = int(wind_data[d][3:5])
+                wind_gust_g = int(wind_data[d][6:8])
+                a=round((wind_gust_g-wind_speed_g)/2+wind_speed_g )
+                wind_data[d] = f"{data[:3]}{a:02d}KT"
 
         wind_c=[]
         for j in wind_data:
