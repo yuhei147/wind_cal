@@ -381,7 +381,7 @@ rjfu_taf=write_taf(rjfu)
 rjfu=rjfu_taf.write_wind()
 
 
-rjfo_wind=wind_cal(rjfo_url,320)
+rjfo_wind=wind_cal(rjfo_url,10)
 rjfo=rjfo_wind.wind()
 rjfo_taf=write_taf(rjfo)
 rjfo=rjfo_taf.write_wind()
