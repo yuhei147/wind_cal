@@ -80,39 +80,22 @@ class wind_cal:
             new_tail =f"T{str(abs(tailwind_speed)).split('.')[0]}" if tailwind_speed < 0 else f"H{str(tailwind_speed).split('.')[0]}" 
             wind_dict[data] = (new_cross, new_tail)
 
-        for wc,cg in enumerate(wind_c):
+        for cg in wind_c:
             if cg in wind_dict:
-                for gu in gust:
-                    wind_dict[gu]=wind_dict[wind_c[wc]]
+                for nn,gu  in enumerate(gust):
+                    wind_dict[gu]=wind_dict[wind_c[nn]]
 
         wx_new_list = []
         for data in wx1:
-            changed_data = None
-
+            new_cross, new_tail = ('', '')
             for wind, add_text in wind_dict.items():
-                if wind in data or len(data)==10:
-
-                    new_cross, new_tail = add_text
-                    changed_data = f'{data.strip()} {new_cross} {new_tail}' 
-            
-            if changed_data is None:
-                wx_new_list.append(data.strip())
-            else:
-                wx_new_list.append(changed_data)
-
-        new_wx_list = []
-        for data in wx1:
-            changed_data = None
-
-            for wind, add_text in wind_dict.items():
-                if wind in data or len(data)==10:
-                    new_cross, new_tail = add_text
-                    changed_data = f'{data.strip()} {new_cross} {new_tail}' 
-            
-            if changed_data is None:
-                new_wx_list.append(data.strip())
-            else:
-                new_wx_list.append(changed_data)
+                if wind in data:
+                    if isinstance(add_text, tuple):
+                        new_cross, new_tail = add_text
+                    else:
+                        new_cross = add_text
+                    break
+            wx_new_list.append(f'{data.strip()} {new_cross} {new_tail}'.strip())
 
         return wx_new_list
 
@@ -170,25 +153,22 @@ class wind_cal_no_tail:
             new_cross = f"C{str(abs(crosswind_speed)).split('.')[0]}"
             wind_dict[data] = (new_cross)
 
-        for wc,cg in enumerate(wind_c):
+        for cg in wind_c:
             if cg in wind_dict:
-                for gu in gust:
-                    wind_dict[gu]=wind_dict[wind_c[wc]]
+                for nn,gu  in enumerate(gust):
+                    wind_dict[gu]=wind_dict[wind_c[nn]]
 
         wx_new_list = []
         for data in wx1:
-            changed_data = None
-
+            new_cross, new_tail = ('', '')
             for wind, add_text in wind_dict.items():
-                if wind in data or len(data)==10:
-
-                    new_cross= add_text
-                    changed_data = f'{data.strip()} {new_cross}' 
-            
-            if changed_data is None:
-                wx_new_list.append(data.strip())
-            else:
-                wx_new_list.append(changed_data)
+                if wind in data:
+                    if isinstance(add_text, tuple):
+                        new_cross, new_tail = add_text
+                    else:
+                        new_cross = add_text
+                    break
+            wx_new_list.append(f'{data.strip()} {new_cross} {new_tail}'.strip())
 
         return wx_new_list
 
@@ -254,25 +234,22 @@ class wind_cal_rjtt:
             new_cross_2 = f"23 C{str(abs(crosswind_speed_2)).split('.')[0]}"
             wind_dict[data] = (new_cross_1, new_cross_2)
 
-        for wc,cg in enumerate(wind_c):
+        for cg in wind_c:
             if cg in wind_dict:
-                for gu in gust:
-                    wind_dict[gu]=wind_dict[wind_c[wc]]
+                for nn,gu  in enumerate(gust):
+                    wind_dict[gu]=wind_dict[wind_c[nn]]
 
         wx_new_list = []
         for data in wx1:
-            changed_data = None
-
+            new_cross, new_tail = ('', '')
             for wind, add_text in wind_dict.items():
-                if wind in data or len(data)==10:
-
-                    new_cross= add_text
-                    changed_data = f'{data.strip()} {new_cross}' 
-            
-            if changed_data is None:
-                wx_new_list.append(data.strip())
-            else:
-                wx_new_list.append(changed_data)
+                if wind in data:
+                    if isinstance(add_text, tuple):
+                        new_cross, new_tail = add_text
+                    else:
+                        new_cross = add_text
+                    break
+            wx_new_list.append(f'{data.strip()} {new_cross} {new_tail}'.strip())
 
         return wx_new_list
     
