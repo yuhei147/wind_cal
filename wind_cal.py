@@ -3,25 +3,24 @@ import requests
 import math
 import streamlit as st
 
-rjcc_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjcc'
-rjch_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjch'
-rjec_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjec'
-rjcb_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjcb'
-rjck_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjck'
-rjcm_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjcm'
-rjss_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjss'
-rjsf_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjsf'
-rjsn_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjsn'
-rjtt_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjtt'
-rjaa_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjaa'
-rjgg_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjgg'
-rjoo_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjoo'
-rjbb_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjbb'
-rjff_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjff'
-rjfu_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjfu'
-rjfo_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjfo'
-rjfr_url='https://www.aviationweather.gov/adds/tafs?station_ids=rjfr'
-
+rjcc_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCC&sep=true'
+rjch_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCH&sep=true'
+rjec_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJEC&sep=true'
+rjcb_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCB&sep=true'
+rjck_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCK&sep=true'
+rjcm_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCM&sep=true'
+rjss_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJSS&sep=true'
+rjsf_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJSF&sep=true'
+rjsn_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJSN&sep=true'
+rjtt_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJTT&sep=true'
+rjaa_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJAA&sep=true'
+rjgg_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJGG&sep=true'
+rjoo_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJOO&sep=true'
+rjbb_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJBB&sep=true'
+rjff_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJFF&sep=true'
+rjfu_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJFU&sep=true'
+rjfo_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJFO&sep=true'
+rjfr_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJFR&sep=true'
 
 class wind_cal:
     def __init__(self, url,direction):
@@ -29,10 +28,17 @@ class wind_cal:
         self.direction=direction
         
     def wind(self):
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+
+        res = requests.get(self.url, headers=headers)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        wx1 = soup.text.split(' ')
+        wind_data = []
         res=requests.get(self.url)
         soup=BeautifulSoup(res.text,'html.parser')
-        wx=soup.find('pre').text
-        wx1=wx.split(' ')
+        wx1=soup.text.split(' ')
         wind_data=[]
         for a in wx1:
             if 'KT' in a:
@@ -105,11 +111,14 @@ class wind_cal_no_tail:
         self.direction=direction
         
     def wind(self):
-        res=requests.get(self.url)
-        soup=BeautifulSoup(res.text,'html.parser')
-        wx=soup.find('pre').text
-        wx1=wx.split(' ')
-        wind_data=[]
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+
+        res = requests.get(self.url, headers=headers)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        wx1 = soup.text.split(' ')
+        wind_data = []
         for a in wx1:
             if 'KT' in a:
                 wind_data.append(a)
@@ -179,11 +188,14 @@ class wind_cal_rjtt:
         self.direction_2=direction_2
         
     def wind(self):
-        res=requests.get(self.url)
-        soup=BeautifulSoup(res.text,'html.parser')
-        wx=soup.find('pre').text
-        wx1=wx.split(' ')
-        wind_data=[]
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+
+        res = requests.get(self.url, headers=headers)
+        soup = BeautifulSoup(res.text, 'html.parser')
+        wx1 = soup.text.split(' ')
+        wind_data = []
         for a in wx1:
             if 'KT' in a:
                 wind_data.append(a)
