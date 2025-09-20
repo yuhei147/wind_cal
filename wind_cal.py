@@ -3,24 +3,25 @@ import requests
 import math
 import streamlit as st
 
-rjcc_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCC&sep=true'
-rjch_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCH&sep=true'
-rjec_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJEC&sep=true'
-rjcb_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCB&sep=true'
-rjck_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCK&sep=true'
-rjcm_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJCM&sep=true'
-rjss_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJSS&sep=true'
-rjsf_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJSF&sep=true'
-rjsn_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJSN&sep=true'
-rjtt_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJTT&sep=true'
-rjaa_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJAA&sep=true'
-rjgg_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJGG&sep=true'
-rjoo_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJOO&sep=true'
-rjbb_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJBB&sep=true'
-rjff_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJFF&sep=true'
-rjfu_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJFU&sep=true'
-rjfo_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJFO&sep=true'
-rjfr_url='https://aviationweather.gov/cgi-bin/data/taf.php?ids=RJFR&sep=true'
+# 新しいAPIエンドポイントを使用
+rjcc_url='https://aviationweather.gov/api/data/taf?ids=RJCC&format=raw'
+rjch_url='https://aviationweather.gov/api/data/taf?ids=RJCH&format=raw'
+rjec_url='https://aviationweather.gov/api/data/taf?ids=RJEC&format=raw'
+rjcb_url='https://aviationweather.gov/api/data/taf?ids=RJCB&format=raw'
+rjck_url='https://aviationweather.gov/api/data/taf?ids=RJCK&format=raw'
+rjcm_url='https://aviationweather.gov/api/data/taf?ids=RJCM&format=raw'
+rjss_url='https://aviationweather.gov/api/data/taf?ids=RJSS&format=raw'
+rjsf_url='https://aviationweather.gov/api/data/taf?ids=RJSF&format=raw'
+rjsn_url='https://aviationweather.gov/api/data/taf?ids=RJSN&format=raw'
+rjtt_url='https://aviationweather.gov/api/data/taf?ids=RJTT&format=raw'
+rjaa_url='https://aviationweather.gov/api/data/taf?ids=RJAA&format=raw'
+rjgg_url='https://aviationweather.gov/api/data/taf?ids=RJGG&format=raw'
+rjoo_url='https://aviationweather.gov/api/data/taf?ids=RJOO&format=raw'
+rjbb_url='https://aviationweather.gov/api/data/taf?ids=RJBB&format=raw'
+rjff_url='https://aviationweather.gov/api/data/taf?ids=RJFF&format=raw'
+rjfu_url='https://aviationweather.gov/api/data/taf?ids=RJFU&format=raw'
+rjfo_url='https://aviationweather.gov/api/data/taf?ids=RJFO&format=raw'
+rjfr_url='https://aviationweather.gov/api/data/taf?ids=RJFR&format=raw'
 
 class wind_cal:
     def __init__(self, url,direction):
@@ -29,17 +30,16 @@ class wind_cal:
         
     def wind(self):
         headers = {
+            # User-Agentの追加は推奨されています
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
 
+        # HTMLを返すエンドポイントではないため、BeautifulSoupでの解析は不要
         res = requests.get(self.url, headers=headers)
-        soup = BeautifulSoup(res.text, 'html.parser')
-        wx1 = soup.text.split(' ')
+        res.raise_for_status() # HTTPエラーが発生した場合に例外を発生させる
+        wx1 = res.text.split(' ') # 直接テキストデータを取得して分割
+        
         wind_data = []
-        res=requests.get(self.url)
-        soup=BeautifulSoup(res.text,'html.parser')
-        wx1=soup.text.split(' ')
-        wind_data=[]
         for a in wx1:
             if 'KT' in a:
                 wind_data.append(a)
@@ -73,7 +73,6 @@ class wind_cal:
 
             wind_direction = int(wind_data[wni][:3])
             wind_speed = int(wind_data[wni][3:5])
-
 
             relative_wind_direction = wind_direction - true_runway_direction + 180
             if relative_wind_direction >= 350:
@@ -116,8 +115,8 @@ class wind_cal_no_tail:
         }
 
         res = requests.get(self.url, headers=headers)
-        soup = BeautifulSoup(res.text, 'html.parser')
-        wx1 = soup.text.split(' ')
+        res.raise_for_status()
+        wx1 = res.text.split(' ')
         wind_data = []
         for a in wx1:
             if 'KT' in a:
@@ -193,8 +192,8 @@ class wind_cal_rjtt:
         }
 
         res = requests.get(self.url, headers=headers)
-        soup = BeautifulSoup(res.text, 'html.parser')
-        wx1 = soup.text.split(' ')
+        res.raise_for_status()
+        wx1 = res.text.split(' ')
         wind_data = []
         for a in wx1:
             if 'KT' in a:
@@ -369,7 +368,6 @@ rjfu=rjfu_wind.wind()
 rjfu_taf=write_taf(rjfu)
 rjfu=rjfu_taf.write_wind()
 
-
 rjfo_wind=wind_cal(rjfo_url,10)
 rjfo=rjfo_wind.wind()
 rjfo_taf=write_taf(rjfo)
@@ -399,4 +397,3 @@ st.write(rjff)
 st.write(rjfu)
 st.write(rjfo)
 st.write(rjfr)
-
